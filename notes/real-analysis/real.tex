@@ -1,0 +1,195 @@
+\documentclass{article}[11pt]
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{xcolor}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\eps}{\epsilon}
+
+\title{Basic Real Analysis I think so}
+\date{April 8th 2023}
+\author{}
+
+\begin{document}
+    \maketitle
+    {\color{red} Tests+}
+    \section{Limits of Functions}
+    Let $S, T$ be two sets. A function $f: S \to T$ means an assignment of elements of $S$ to elements of $T$. The sets $\R, \Z, \N$ are the reals, integers, and naturals, respectively.
+
+    Let $f: \R \to \R$ be a function. We say that for $c, A \in R$:
+    $$ \lim_{x \to c} f(x) = A ,$$
+    if the following condition holds
+    $$ \forall \eps~\exists \delta : 0 < |x - c| < \delta \implies |f(x) - A| < \eps .$$
+    Note that the statement when $\eps \leq 0$ is ``vacously true", so in all our proofs hereafter we only need to find a $\delta$ for each $\eps > 0$. Similarly, it will never make sense to pick a $\delta < 0$. Moreover, the definition as is does not require $f$ to be defined at $c$ because of the $0 < $.
+    We now prove basic limit laws. Introduce another function $g: \R \to \R$ and $B \in \R$. Then
+    $$ \lim_{x \to c} f(x) = A, \lim_{x \to c} g(x) = B \implies \lim_{x \to c} \left(f(x) + g(x)\right) = A + B $$
+    (Note that the limit on the RHS is taken on the function that sends $x \mapsto f(x) + g(x)$, but it is written like it is above for convenience). To prove this, fix $\epsilon > 0$. Then there exists $\delta_1, \delta_2$ such that 
+    \begin{align*}
+        0 < |x - c| < \delta_1 &\implies |f(x) - A| < \frac{\eps}{2} \\
+        0 < |x - c| < \delta_2 &\implies |g(x) - B| < \frac{\eps}{2} .\\
+    \end{align*}
+    So for $0 < |x - c| < \delta = \min\left(\delta_1, \delta_2\right)$ we have
+    \begin{align*}
+        |f(x) + g(x) - (A + B)| &= |(f(x) - A) + (g(x) - B)| \\
+                                &\leq |f(x) - A| + |g(x) - B| \\
+                                &< \frac{\eps}{2} + \frac{\eps}{2} \\
+                                &= \eps,
+    \end{align*}
+    where the first inequality is because of the triangle inequality. Similarly, under the same hypothesis we have
+    $$ \lim_{x \to c} \left(f(x)g(x)\right) = AB .$$
+    To prove this, fix $\epsilon > 0$. Then there exists $\delta_2$ such that
+    $$ 0 < |x - c| < \delta_2 \implies |g(x) - B| < \frac{\eps}{2|A|} .$$
+    Note when $|x - c| < \delta_2$, the above implication implies that $g$ is bounded. That is, we have
+    \begin{align*}
+        -\frac{\eps}{2|A|} < g(x) - B < \frac{\eps}{2|A|} \\
+        -\frac{\eps}{2|A|} + B < g(x) < \frac{\eps}{2|A|} + B \\
+        |g(x)| < M = \max\left(\left|-\frac{\eps}{2|A|} + B\right|, \left|\frac{\eps}{2|A|} + B\right|\right).
+    \end{align*}
+    Now let $\delta_1$ be such that
+    $$ 0 < |x - c| < \delta_1 \implies |f(x) - A| < \frac{\eps}{2M} .$$
+    Then for $0 < |x - c| < \delta = \min(\delta_1, \delta_2)$ we have
+    \begin{align*}
+        |f(x)g(x) - AB| &= |f(x)g(x) - Ag(x) + Ag(x) - AB| \\
+                        &= |g(x)(f(x) - A) + A(g(x) - B)| \\
+                        &\leq |g(x)(f(x) - A)| + |A(g(x) - B)| \\
+                        &= |g(x)||f(x) - A| + |A||g(x) - B| \\
+                        &< M\left(\frac{\eps}{2M}\right) + |A|\left(\frac{\eps}{2|A|}\right) \\
+                        &= \eps.
+    \end{align*}
+    There is also the reciprocal rule. Suppose that
+    $$ \lim_{x \to c} f(x) = A $$
+    and that $A \neq 0$. Then we have
+    $$ \lim_{x \to c} \left(\frac{1}{f(x)}\right) = \frac{1}{A} .$$
+    To prove this, fix $\eps > 0$. Then there exists $\delta_1$ such that
+    $$ 0 < |x - c| < \delta_1 \implies |f(x) - A| < \frac{|A|}{2} . $$
+    Note we also have that
+        $$ 0 < |x - c| < \delta_1 \implies \left| \frac{1}{f(x)} \right| < \frac{2}{|A|} ,$$
+    because
+    \begin{align*}
+        |A| &= |A - f(x) + f(x)| \\
+            &\leq |A - f(x)| + |f(x)| \\
+            &= |f(x) - A| + |f(x)| \\
+            &< \frac{|A|}{2} + |f(x)| ,\\
+    \end{align*}
+    so we have
+    $$ |f(x)| > \frac{|A|}{2} \implies \left| \frac{1}{f(x)} \right| < \frac{2}{|A|} .$$
+    Now let $\delta_2$ be such that
+    $$ 0 < |x - c| < \delta_2 \implies |f(x) - A| < \frac{|A|^2 \eps}{2} .$$
+    Then for $0 < |x - c| < \delta = \min(\delta_1, \delta_2)$ we have
+    \begin{align*}
+        \left| \frac{1}{f(x)} - \frac{1}{A} \right| &= \left| \frac{A - f(x)}{f(x) A} \right| \\
+                                                    &= \frac{|f(x) - A|}{|f(x)| |A|} \\
+                                                    &= |f(x) - A| \cdot \left| \frac{1}{f(x)} \right| \cdot \frac{1}{|A|} \\
+                                                    &< \frac{|A|^2 \eps}{2} \cdot \frac{2}{|A|} \cdot \frac{1}{|A|} \\
+                                                    &= \eps
+    \end{align*}
+    The idea was that we manufactured the necessary bounds through specific $\eps_i-\delta_i$ assertions and then chose our actual $\delta$ to be the minimum over all chosen $\delta_i$ so that all of our assertions and bounds hold true when $0 < |x - c| < \delta$.
+
+    Now after proving those three basic limit laws, we can do a number of things. For instance, when $B \neq 0$ as above we have
+    \begin{align*}
+        \lim_{x \to c} \left(\frac{f(x)}{g(x)}\right) &= \lim_{x \to c} \left(f(x) \cdot \frac{1}{g(x)}\right) \\
+                                         &= \lim_{x \to c} (f(x)) \cdot \lim_{x \to c} \left(\frac{1}{g(x)}\right) \\
+                                         &= \frac{A}{B}.
+    \end{align*}
+    Actually we need two more basic limits before the powerful stuff. For $k \in \R$ a constant (treated as the constant function below) we have
+    $$ \lim_{x \to c} k = k ,$$
+    since for any $\eps > 0$ we have
+    $$ 0 < |x - c| < 1 \implies |k - k| < \eps .$$
+    (Really we could have changed the $1$ above to any positive number.) Similarly, we also have
+    $$ \lim_{x \to c} x = c ,$$
+    since for any $\eps > 0$ we have
+    $$ 0 < |x - c| < \eps \implies |x - c| < \eps .$$
+    We can now say that for $n \in \Z, a_0, \dots, a_n \in \R$ we have
+    $$ \lim_{x \to c} (a_n x^n + a_{n - 1} x^{n - 1} + \dots + a_0) = a_n c^n + a_{n - 1} c^{n - 1} + \dots + a_0 ,$$
+    as this is just a simple application of the sum and product rules of limits. The analogous result for the limit of the quotient of two polynomials holds when the limit of the polynomial in the denominator is nonzero.
+
+    \section{Limits of Sequences}
+    A sequence $(a_n)$ of real numbers is a countable list $a_1, a_2, a_3, \dots$ where each $a_i \in \R$. We say that a sequence $(a_n)$ converges to $A$ if the following condition holds:
+    $$ \forall \epsilon~\exists N \in \N : n \geq N \implies |a_n - N| < \eps .$$
+    We write $(a_n) \to A$ for shorthand. Note that the subtleties are the same for those of the limit. If $\eps < 0$ the implication is vacously true, and choosing a $N \leq 0$ doesn't make sense. The sequence laws can be proven in the exact same way as the limit laws. If we have another sequence $(b_n) \to B$, then the sequence defined by $c_n = a_n + b_n$ satisfies $(c_n) \to A + B$. To prove this, fix $\eps > 0$. Then there exists $N_1, N_2$ such that
+    \begin{align*}
+        n \geq N_1 &\implies |a_n - A| < \frac{\eps}{2} \\
+        n \geq N_2 &\implies |b_n - B| < \frac{\eps}{2} ,\\
+    \end{align*} 
+    so we have for $n \geq N = \max(N_1, N_2)$ that
+    \begin{align*}
+        |(a_n + b_n) - (A + B)| &= |(a_n - A) + (b_n - B)| \\
+                              &\leq |a_n - A| + |b_n - B| \\
+                              &\leq \frac{\eps}{2} + \frac{\eps}{2} \\
+                              &= \eps. \\
+    \end{align*}
+    Similarly, the sequence defined by $c_n = a_n \cdot b_n$ satisfies $(c_n) \to AB$. To prove this, fix $\eps > 0$. Then there exists $N_1$ such that
+    $$ n \geq N_1 \implies |b_n - B| < \frac{\eps}{2|A|} .$$
+    Note also that when $n \geq N_1$, $(b_n)$ is bounded (and since $N_1$ is finite the entire sequence is bounded! but we don't need this fact right now), i.e.
+    \begin{align*}
+        -\frac{\eps}{2|A|} < b_n - B < \frac{\eps}{2|A|} \\
+        -\frac{\eps}{2|A|} + B < b_n < \frac{\eps}{2|A|} + B \\
+        |b_n| < M = \max\left(\left| -\frac{\eps}{2|A|} + B \right|, \left| \frac{\eps}{2|A|} + B \right|\right) . \\
+    \end{align*}
+    Now let $N_2$ be such that
+    $$ n \geq N_2 \implies |a_n - A| < \frac{\eps}{2M} .$$
+    Then for $n \geq N = \max(N_1, N_2)$ we have that
+    \begin{align*}
+        |c_n - AB| &= |a_n b_n - AB| \\
+                  &= |a_n b_n - A b_n + A b_n - AB| \\
+                  &= |b_n(a_n - A) + A(b_n - B)| \\
+                  &\leq |b_n(a_n - A)| + |A(b_n - B)| \\
+                  &= |b_n| |a_n - A| + |A| |b_n - B| \\
+                  &< M\left(\frac{\eps}{2M}\right) + |A| \frac{\eps}{2|A|} \\
+                  &= \frac{\eps}{2} + \frac{\eps}{2} \\
+                  &= \eps .\\
+    \end{align*}
+    (Note $1$ could have been any positive integer above.) Now suppose the sequence $(a_n)$ follows $(a_n) \to A$ where $A \neq 0$ and every term $a_i \neq 0$. Then the sequence defined by $c_n = \frac{1}{a_n}$ converges to $\frac{1}{A}$, that is, $(c_n) \to \frac{1}{A}$. Note that in the case for limits we didn't require that the function in the denominator be nonzero everywhere, but in the case of sequences, if $a_n = 0$ for some $n$ then $c_n$ has no value. To prove that $(c_n) \to \frac{1}{A}$, fix $\eps > 0$. Let $N_1$ be such that
+    $$ n \geq N_2 \implies |a_n - A| < \frac{|A|}{2} .$$
+    Note that we also have that
+    $$ n \geq N_2 \implies \left| \frac{1}{a_n} \right| < \frac{2}{|A|} $$
+    because
+    \begin{align*}
+        |A| &= |A - a_n + a_n| \\
+            &\leq |A - a_n| + |a_n| \\
+            &= |a_n - A| + |a_n| \\
+            &< \frac{|A|}{2} + |a_n| ,\\
+    \end{align*}
+    so we have
+    $$ |a_n| > \frac{|A|}{2} \implies \left| \frac{1}{a_n} \right| < \frac{2}{|A|} .$$
+    Now let $N_1$ be such that
+    $$ n \geq N_1 \implies |a_n - A| < \frac{|A|^2 \eps}{2} .$$
+    Then for $n \geq N = \max(N_1, N_2)$ we have
+    \begin{align*}
+        \left| c_n - \frac{1}{A} \right| &= \left| \frac{1}{a_n} - \frac{1}{A} \right| \\
+                             &= \left| \frac{A - a_n}{A a_n} \right| \\
+                             &= \frac{|a_n - A|}{|A| |a_n|} \\
+                             &= |a_n - A| \cdot \left| \frac{1}{a_n} \right| \cdot \frac{1}{|A|} \\
+                             &< \frac{|A|^2 \eps}{2} \cdot \frac{2}{|A|} \cdot \frac{1}{|A|} \\
+                             &= \eps .\\
+    \end{align*}
+    We can now say that if $(a_n) \to A$ is any sequence and $(b_n) \to B$ is a sequence of nonzero terms such that $B \neq 0$, then the sequence defined by $c_n = \frac{a_n}{b_n}$ satifies $(c_n) \to \frac{A}{B}$ since if we let $d_n = \frac{1}{b_n}$ then $(d_n) \to \frac{1}{B}$, and $c_n = a_n \cdot d_n$ so $(c_n) \to A \cdot \frac{1}{B} = \frac{A}{B}$.
+
+
+    Now we compute one more basic limit. For $k \in \R$, denote the constant sequence $k, k, k, \dots$ by $(k_n)$. Then $(k_n) \to k$. To prove this, fix $\eps > 0$. Then clearly
+    $$ n \geq 1 \implies |k_n - k| = |k - k| = 0 < \eps $$.
+
+    \section{Continuity}
+    We say that a function $f: \R \to \R$ is continuous at $c \in \R$ if the following statement holds: 
+    $$ \lim_{x \to c} f(x) = f(c) .$$
+    So by the definition, the limit of $f$ at $c$ must exist \emph{and} must be equal to $f(c)$. Writing out the limit in more explicit terms, for every $\eps > 0$ there exists $\delta$ such that
+   $$ 0 < |x - c| < \delta \implies |f(x) - f(c)| < \eps .$$
+   Note that when proving that a function is continuous, one must prove that $\lim_{x \to c} f(x) = A$ where $A = f(c)$. In particular,
+   $$ 0 = |x - c| \implies x = c \implies |f(c) - A| = 0 < \eps $$
+   holds for any $\eps > 0$, so we can drop the $0 <$ in our proofs of continuity because the implication always holds for any choice of $\eps, \delta > 0$.
+
+   Note that if $f$ and $g$ are both continuous at $c$ then the addition/subtraction/product/quotient rules holds because of the limit laws. That is,
+   $$ \lim_{x \to c} (f(x) + g(x)) = \lim_{x \to c} f(x) + \lim_{x \to c} g(x) = f(c) + g(c) ,$$
+   and
+   $$ \lim_{x \to c} \left(f(x) g(x)\right) = \lim_{x \to c} f(x) \cdot \lim_{x \to c} g(x) = f(c)g(c) ,$$
+   and
+   $$ \lim_{x \to c} \left(\frac{f(x)}{g(x)}\right) = \frac{\lim_{x \to c} f(x)}{\lim_{x \to c} g(x)} = \frac{f(c)}{g(c)} $$
+   when $g(c) \neq 0$.
+
+   We say that a function $f$ is continuous if it is continuous everywhere on its domain, so in the case of a function $f: \R \to \R$ (most of the functions we will be dealing with) it must be continuous at all $c \in \R$.
+\end{document}
