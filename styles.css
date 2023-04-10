@@ -1,0 +1,16 @@
+* {
+    color: rgb(180, 255, 180);
+}
+
+body {
+    background-color: #000000;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #c172e9;
+}
+
+p {
+    /* font-size: 18px; */
+}
