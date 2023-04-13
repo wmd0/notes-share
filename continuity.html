@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>continuity</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script type="text/javascript" id="MathJax-script" async
+                                       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+        <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']]
+                }
+            };
+        </script>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+
+    </head>
+
+    <body>
+        Suppose that $f$ and $g$ are real functions and $a, b \in \mathbb{R}$ are such that $g$ is continuous at $b$ and
+        $$ \lim_{x \to a} f(x) = b ,$$
+        $$ \lim_{y \to b} g(y) = c ,$$
+        then we have
+        $$ \lim_{x \to a} (g \circ f)(x) = c .$$
+        To see this, fix $\epsilon > 0$. Then there exists $\delta$ such that
+        $$ |y - b| < \delta \implies |g(y) - c| < \epsilon .$$
+        At the same time, there exists $\delta'$ such that
+        $$ |x - a| < \delta' \implies |f(x) - b| < \delta .$$
+        Thus when $|x - a| < \delta'$ we have
+        $$ |x - a| < \delta' \implies |f(x) - b| < \delta \implies |g(f(x)) - c| < \epsilon .$$
+    </body>
+</html>
